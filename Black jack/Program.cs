@@ -30,7 +30,7 @@ namespace Black_jack
     {
         private int _amountCardsSuit = 4;
         private int _amountCardsValue = 13;
-        List<Card> _deck;
+        private List<Card> _deck;
 
         private List<string> _cardsSuit = new List<string> { "♣", "♠", "♥", "♦" };
         private List<string> _cardsValue = new List<string> { "T", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "D", "K" };
@@ -46,13 +46,13 @@ namespace Black_jack
                 {
                     Card card = new Card(_cardsValue[i], _cardsSuit[j]);
                     _deck.Add(card);
-                    
+
                 }
 
             }
         }
 
-
+        public List<Card> Deck { get; private set;}
     }
 
     class player
@@ -62,7 +62,7 @@ namespace Black_jack
 
     class CasinoDealer
     {
-        private int _amountCardDecks = 5;
+
 
     }
 }
