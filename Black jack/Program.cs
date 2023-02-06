@@ -10,6 +10,38 @@ namespace Black_jack
     {
         static void Main(string[] args)
         {
+            const string CommandGetCard = "1";
+            const string CommandNotTakeCard = "2";
+            const string CommandExitGame = "3";
+
+            CasinoDealer casinoDealer = new CasinoDealer();
+            Player player = new Player();
+            CardDeck cardDeck = new CardDeck();
+            cardDeck.CreateDeck();
+
+            bool isWork = true;
+
+            while (isWork)
+            {
+                switch (Console.ReadLine())
+                {
+                    case CommandGetCard:
+
+                        break;
+
+                    case CommandNotTakeCard:
+
+                        break;
+
+                    case CommandExitGame:
+                        isWork = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("");
+                        break;
+                }
+            }
         }
     }
 
@@ -24,6 +56,7 @@ namespace Black_jack
             _cardValue = cardValue;
         }
 
+
     }
 
     class CardDeck
@@ -37,7 +70,7 @@ namespace Black_jack
 
 
 
-        private void CreateDeck()
+        public void CreateDeck()
         {
 
             for (int i = 0; i < _amountCardsValue; i++)
@@ -52,16 +85,30 @@ namespace Black_jack
             }
         }
 
-        public List<Card> Deck { get; private set;}
+        public bool TryGetCard(out Card card)
+        {
+            if (_deck.Count > 0)
+            {
+                card = _deck[0];
+                _deck.RemoveAt(0);
+                return true;
+            }
+            else
+            {
+                card = null;
+                return false;
+            }
+        }
+        public List<Card> Deck { get; private set; }
     }
-
-    class player
-    {
-
-    }
-
     class CasinoDealer
     {
-
+        private List<Card> _handDealer = new List<Card>();
     }
+
+    class Player
+    {
+        private List<Card> _handPlayer = new List<Card>();
+    }
+
 }
