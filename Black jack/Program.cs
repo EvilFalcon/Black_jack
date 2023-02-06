@@ -63,6 +63,5 @@ namespace Black_jack
     class CasinoDealer
     {
 
-
     }
 }
