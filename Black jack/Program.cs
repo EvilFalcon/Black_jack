@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Black_jack
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
@@ -66,7 +66,7 @@ namespace Black_jack
             _hand.Add(card);
         }
 
-        public void BringBackCard(List<Card>  cards)//возврат карт
+        public void BringBackCard(List<Card> cards)//возврат карт
         {
             for (int i = 0; i < _hand.Count; i++)
             {
@@ -87,8 +87,11 @@ namespace Black_jack
 
     class CasinoDealer
     {
-        List<Card> hand = new List<Card>();
-        CardDeck deck = new CardDeck();
+        private List<Card> _hand = new List<Card>();
+        private CardDeck _deck = new CardDeck();
+
+
+
     }
 
     class Card
@@ -100,10 +103,6 @@ namespace Black_jack
         {
             _cardSuit = cardSuit;
             _cardValue = cardValue;
-        }
-        public Card()
-        {
-
         }
 
         public int AccruePoints(Card[] card)  /*логика очков за карты */
@@ -123,12 +122,8 @@ namespace Black_jack
     {
         private static Random random = new Random();
 
-        private int _amountCardsSuit = 4;
-        private int _amountCardsValue = 13;
         private List<Card> _deck = new List<Card>();
 
-        private List<string> _cardsSuit = new List<string> { "♣", "♠", "♥", "♦" };
-        private List<string> _cardsValue = new List<string> { "T", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "D", "K" };
 
         public CardDeck()
         {
@@ -137,6 +132,8 @@ namespace Black_jack
 
         private void FillDeck()
         {
+            List<string> _cardsValue = new List<string> { "T", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "D", "K" };
+            List<string> _cardsSuit = new List<string> { "♣", "♠", "♥", "♦" };
 
             for (int i = 0; i < _cardsValue.Count; i++)
             {
@@ -144,15 +141,13 @@ namespace Black_jack
                 {
                     Card card = new Card(_cardsValue[i], _cardsSuit[j]);
                     _deck.Add(card);
-
                 }
-
             }
 
-            Shuffle();
+            Shuffle(_deck);
         }
 
-        private void Shuffle()
+        public void Shuffle(List<Card> cards)
         {
             for (int i = 0; i < _deck.Count; i++)
             {
@@ -160,7 +155,6 @@ namespace Black_jack
                 (_deck[i], _deck[indexCard]) = (_deck[indexCard], _deck[i]);
 
             }
-
         }
 
 
