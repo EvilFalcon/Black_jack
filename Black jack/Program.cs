@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -48,7 +48,7 @@ namespace Card
 
                 Console.Clear();
                 _player.ShowAllCardsInfo(_playerPositionLeft, _player.Name);
-                _dealer.ShowCardDealerInfo(_dealerPositionLeft, _dealer.Name);
+                _dealer.ShowCardInfo(_dealerPositionLeft, _dealer.Name);
                 Console.SetCursorPosition(positionLeftMenu, positionTopMenu);
                 Console.WriteLine($"{CommandGetCard}) взять карту ");
                 Console.WriteLine($"{CommandPassTheMove}) Передать ход");
@@ -272,7 +272,6 @@ namespace Card
 
         private void ShowInfoDeckCount(int count, ConsoleKey inputKey, ConsoleKey increaseKey, ConsoleKey decreaseKey)
         {
-
             int maxCountCard = _deck.GetCardsCountInOnePack * count;
 
             Console.WriteLine($"Управление количеством колод!\nУменьшить количество колод :{decreaseKey}\nУвеличить количество колод {increaseKey}\nПодтвердить выбор режима {increaseKey}");
@@ -282,16 +281,13 @@ namespace Card
 
     class Deck
     {
-
-        private int _decksCount;
         private List<Card> _cards = new List<Card>();
         private List<string> _cardsValue = new List<string> { "T", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "D", "K" };
         private List<string> _cardsSuit = new List<string> { "♣", "♠", "♥", "♦" };
 
-        public Deck(int deckCount = 1)
+        public Deck(int decksCount = 1)
         {
-            _decksCount = deckCount;
-            Fill();
+            Fill(decksCount);
             Shuffle();
         }
 
@@ -314,9 +310,9 @@ namespace Card
             }
         }
 
-        private void Fill()
+        private void Fill(int decksCount)
         {
-            for (int k = 0; k < _decksCount; k++)
+            for (int k = 0; k < decksCount; k++)
             {
                 CreateDeck();
             }
@@ -344,7 +340,6 @@ namespace Card
                 (_cards[i], _cards[indexCard]) = (_cards[indexCard], _cards[i]);
             }
         }
-
     }
 
     class Card
@@ -358,7 +353,7 @@ namespace Card
             _value = value;
         }
 
-        public string CardValue()
+        public string GetCardValue()
         {
             string value = _value;
             return value;
@@ -372,13 +367,12 @@ namespace Card
 
     abstract class Person
     {
-        private int _pointCards = 0;
 
-        private List<Card> _cardsOfHand = new List<Card>();
+        protected List<Card> _cardsOfHand = new List<Card>();
 
         public int CardsCount => _cardsOfHand.Count;
 
-        private bool HaveNotCards
+        public bool HaveNotCards
         {
             get
             {
@@ -386,25 +380,25 @@ namespace Card
             }
         }
 
-        public int PointCards => _pointCards;
+        public int PointCards { get; protected set; }
 
         public void ScorePoints(int pointsCards)
         {
-            _pointCards = pointsCards;
+            //_pointCards = pointsCards;
+            PointCards = pointsCards;
         }
 
         public void GetCard(Card card)
         {
-            Card temporaryCard = card;
-            if (temporaryCard != null)
+            if (card != null)
             {
-                _cardsOfHand.Add(temporaryCard);
+                _cardsOfHand.Add(card);
             }
         }
 
         public string GetCardValue(int index)
         {
-            string valueCardOfHand = _cardsOfHand[index].CardValue();
+            string valueCardOfHand = _cardsOfHand[index].GetCardValue();
             return valueCardOfHand;
         }
 
@@ -416,20 +410,18 @@ namespace Card
             }
             else
             {
-                Console.WriteLine("У вас нет кард");
+                Console.WriteLine("У вас нет карт");
             }
         }
 
         public void ShowAllCardsInfo(int positionLeft, string name, int positionTopInfoCard = 1)
         {
-
             if (HaveNotCards == false)
             {
                 int positionInfoCard = 3 + name.Length;
                 int positionString = 1;
                 Console.SetCursorPosition(positionLeft, positionTopInfoCard - positionString);
-                Console.WriteLine($"|{name}|карты|Кол/во очков: {_pointCards}|");
-
+                Console.WriteLine($"|{name}|карты|Кол/во очков: {PointCards}|");
 
                 foreach (var card in _cardsOfHand)
                 {
@@ -442,16 +434,6 @@ namespace Card
             }
         }
 
-        public void ShowCardDealerInfo(int positionLeft, string name)
-        {
-            if (HaveNotCards == false)
-            {
-                Console.WriteLine($"|Карты {name}|");
-                _cardsOfHand[0].ShowInfo();
-            }
-
-            Console.SetCursorPosition(0, 0);
-        }
     }
 
     class Player : Person
@@ -469,9 +451,20 @@ namespace Card
 
     class Dealer : Person
     {
-        private string name = "Dealer";
+        private string _name = "Dealer";
 
-        public string Name => name;
+        public string Name => _name;
+
+        public void ShowCardInfo(int positionLeft, string name)
+        {
+            if (HaveNotCards == false)
+            {
+                Console.WriteLine($"|Карты {name}|");
+                _cardsOfHand[0].ShowInfo();
+            }
+
+            Console.SetCursorPosition(0, 0);
+        }
     }
 }
 //////доработать 
