@@ -384,7 +384,6 @@ namespace Card
 
         public void ScorePoints(int pointsCards)
         {
-
             PointCards = pointsCards;
         }
 
